@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Poema Infinito Circular</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background-color: #111;
+      color: #f5f5f5;
+      line-height: 1.8;
+      font-size: 1.2rem;
+      height: 100vh;
+      overflow-y: scroll;
+    }
+
+    #container {
+      width: 60%;
+      margin: 0 auto;
+      padding: 100vh 0; /* espacio arriba y abajo para permitir scroll inicial */
+    }
+
+    .verse {
+      margin-bottom: 1.2em;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    const versos = [
+      "De nada me sirve tanto escribir si no hay destinatario para este remitente",
+      "Remitente el cual no logra expresar todo su dolor y su incomodidad",
+      "Incomodidad que no me deja dormir, incomodidad que no me deja vivir",
+      "Vivir que solo sentí exclusivamente contigo, en aquella cama",
+      "Cama la cual ya no puedo tocar porque me lleva directamente a ti y a tu silueta",
+      "Silueta la que no he vuelto a ver, silueta la cual extraño cada amanecer y anochecer",
+      "Anochecer que cae lentamente en mis pies y va subiendo hasta mi esternón",
+      "Esternón que se ha vuelto susceptible a cada uno de tus huellas, de tus marcas",
+      "Marcas que dejaste sin saber en la casa en la que habito, en cada uno de lugares",
+      "Lugares por los que paso con una profunda intranquilidad por recordar",
+      "Recordar como fuiste impregnando tu esencia en cada uno de los objetos",
+      "Objetos que forman parte de mi día a día y que duele el sólo observarlos",
+      "Observarlos y sentirte ahí, en la cama, en la mesa, en el sofá",
+      "Sofá que aún tiene tu lugar reservado, puesto que el sofá aun te espera",
+      "Espera interminable, espera eterna, espera desesperanzada, espera llena de nada"
+    ];
+
+    const container = document.getElementById('container');
+
+    // Agrega una ronda de versos al final
+    function agregarAbajo() {
+      versos.forEach(verso => {
+        const p = document.createElement('p');
+        p.className = 'verse';
+        p.textContent = verso;
+        container.appendChild(p);
+      });
+    }
+
+    // Agrega una ronda de versos al inicio
+    function agregarArriba() {
+      const scrollAntes = window.scrollY;
+      versos.slice().reverse().forEach(verso => {
+        const p = document.createElement('p');
+        p.className = 'verse';
+        p.textContent = verso;
+        container.insertBefore(p, container.firstChild);
+      });
+
+      // Mantiene el scroll en el lugar correcto
+      const nuevoScroll = window.scrollY + container.firstChild.offsetHeight * versos.length;
+      window.scrollTo(0, nuevoScroll);
+    }
+
+    // Carga inicial
+    agregarAbajo();
+    agregarAbajo();
+    agregarAbajo(); // Agrega varios para que haya scroll desde el comienzo
+
+    // Escucha el scroll
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const scrollBottom = window.innerHeight + scrollTop;
+
+      const limiteSuperior = 300;
+      const limiteInferior = document.body.scrollHeight - 300;
+
+      if (scrollTop < limiteSuperior) {
+        agregarArriba();
+      }
+
+      if (scrollBottom > limiteInferior) {
+        agregarAbajo();
+      }
+    });
+  </script>
+</body>
+</html>
